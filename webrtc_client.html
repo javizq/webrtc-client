@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebRTC Client</title>
+    <script src="https://cdn.jsdelivr.net/npm/sip.js"></script>
+</head>
+<body>
+    <h1>WebRTC Client</h1>
+    <button onclick="startCall()">Start Call</button>
+
+    <script>
+        var userAgent;
+
+        function startCall() {
+            const server = 'wss://0704d8.c.myucm.cloud:8089/ws'; // URL de tu servidor CloudUCM
+            const uri = 'sip:1000@0704d8.c.myucm.cloud'; // Dirección SIP de tu extensión
+            const options = {
+                uri: uri,
+                transportOptions: {
+                    wsServers: [server],
+                    traceSip: true,
+                },
+                authorizationUsername: '1000', // Número de extensión
+                authorizationPassword: 'wxyz6V@v5', // Contraseña SIP
+                displayName: 'Javier Izquierdo' // Nombre de usuario
+            };
+
+            userAgent = new SIP.UA(options);
+
+            userAgent.start();
+
+            userAgent.on('registered', () => {
+                console.log('Registered successfully');
+            });
+
+            userAgent.on('invite', (session) => {
+                session.accept();
+            });
+        }
+    </script>
+</body>
+</html>
